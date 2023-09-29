@@ -22,11 +22,14 @@ namespace DrugSearch.Controllers
         public async void Post(Update update)
         {
             var txt = update.Message?.Text;
-            long chatId = update.Message.Chat.Id;
+            long chatId = 0;
+            long.TryParse(update.Message.Chat.Id.ToString() ?? "", out chatId);
+
             if (txt == "test")
             {
                 var webapp = new WebAppInfo();
                 webapp.Url = "https://habr.com/ru/articles/666278/";
+                
                 InlineKeyboardMarkup inlineKeyboard = new(new[]
                 {
                     // first row
