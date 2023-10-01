@@ -54,27 +54,18 @@ namespace DrugSearch.Services
 
             static async Task<Message> StartAction(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
             {
-                InlineKeyboardMarkup inlineKeyboard = new(
-                    new[]
-                    {
-                        // first row
-                        new []
-                        {
-                            InlineKeyboardButton.WithCallbackData("1.1", "11"),
-                            InlineKeyboardButton.WithCallbackData("1.2", "12"),
-                        },
-                        // second row
-                        new []
-                        {
-                            InlineKeyboardButton.WithCallbackData("2.1", "21"),
-                            InlineKeyboardButton.WithCallbackData("2.2", "22"),
-                        },
-                    });
+                await botClient.SendChatActionAsync(
+                    chatId: message.Chat.Id,
+                    chatAction: ChatAction.Typing,
+                    cancellationToken: cancellationToken);
+
+                ReplyKeyboardMarkup replyKeyboard = new( new KeyboardButton("How to use?"));
+                replyKeyboard.ResizeKeyboard = true;
 
                 return await botClient.SendTextMessageAsync(
                     chatId: message.Chat.Id,
-                    text: "Choose",
-                    replyMarkup: inlineKeyboard,
+                    text: "Welcome to Telegram Bot DrugSearch.\nSend a drug name or select a section:",
+                    replyMarkup: replyKeyboard,
                     cancellationToken: cancellationToken);
             }
 
@@ -118,7 +109,8 @@ namespace DrugSearch.Services
                     chatAction: ChatAction.Typing,
                     cancellationToken: cancellationToken);
 
-                var webAppInfo = new WebAppInfo() { Url = "https://github.com/otabek-dev" };
+                var webAppInfo = new WebAppInfo() { Url = "https://master--brilliant-blini-a90b82.netlify.app/" };
+                
 
                 InlineKeyboardMarkup inlineKeyboard = new(InlineKeyboardButton.WithWebApp("Result", webAppInfo));
 
