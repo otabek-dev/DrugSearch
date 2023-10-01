@@ -11,17 +11,6 @@ namespace DrugSearch.Services
     {
         private TelegramBotClient _botClient = Bot.GetTelegramBot();
 
-        public Task HandleErrorAsync(Exception exception, CancellationToken cancellationToken)
-        {
-            var ErrorMessage = exception switch
-            {
-                ApiRequestException apiRequestException => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-                _ => exception.ToString()
-            };
-
-            return Task.CompletedTask;
-        }
-
         public async Task HandleUpdateAsync(Update update, CancellationToken cancellationToken)
         {
             var handler = update switch
@@ -251,32 +240,8 @@ namespace DrugSearch.Services
                 cancellationToken: cancellationToken);
         }
 
-        private readonly string[] sites = { "Google", "Github", "Telegram", "Wikipedia" };
-        private readonly string[] siteDescriptions =
-        {
-            "Google is a search engine",
-            "Github is a git repository hosting",
-            "Telegram is a messenger",
-            "Wikipedia is an open wiki"
-        };
-
         private async Task BotOnInlineQueryReceived(InlineQuery inlineQuery, CancellationToken cancellationToken)
         {
-            //var results = new List<InlineQueryResult>();
-
-            //var counter = 0;
-            //foreach (var site in sites)
-            //{
-            //    results.Add(new InlineQueryResultArticle(
-            //        $"{counter}", // we use the counter as an id for inline query results
-            //        site, // inline query result title
-            //        new InputTextMessageContent(siteDescriptions[counter])) // content that is submitted when the inline query result title is clicked
-            //    );
-            //    counter++;
-            //}
-
-            //await _botClient.AnswerInlineQueryAsync(inlineQuery.Id, results); // answer 
-
             InlineQueryResult[] results = {
                 // displayed result
                 new InlineQueryResultArticle(
@@ -295,11 +260,6 @@ namespace DrugSearch.Services
 
         private async Task BotOnChosenInlineResultReceived(ChosenInlineResult chosenInlineResult, CancellationToken cancellationToken)
         {
-            //if (uint.TryParse(chosenInlineResult.ResultId, out var resultId) && resultId < sites.Length)
-            //    Console.WriteLine($"User {chosenInlineResult.From} has selected site: {sites[resultId]}");
-
-            //return Task.CompletedTask;
-
             await _botClient.SendTextMessageAsync(
                 chatId: chosenInlineResult.From.Id,
                 text: $"You chose result with Id: {chosenInlineResult.ResultId}",
