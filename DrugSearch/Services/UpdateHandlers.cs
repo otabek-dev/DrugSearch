@@ -109,8 +109,7 @@ namespace DrugSearch.Services
                     chatAction: ChatAction.Typing,
                     cancellationToken: cancellationToken);
 
-                var webAppInfo = new WebAppInfo() { Url = "https://master--brilliant-blini-a90b82.netlify.app/" };
-                
+                var webAppInfo = new WebAppInfo() { Url = "https://master--brilliant-blini-a90b82.netlify.app/test"};
 
                 InlineKeyboardMarkup inlineKeyboard = new(InlineKeyboardButton.WithWebApp("Result", webAppInfo));
 

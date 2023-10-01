@@ -5,7 +5,7 @@ const DrugList = () => {
 
   const fullURL = window.location.href;
   const baseURL = window.location.origin;
-  const relativeURL = fullURL.substring(baseURL.length + 1);
+  const relativeURL = fullURL.substring(baseURL.length + 1, fullURL.indexOf('#'));
 
   useEffect(() => {
     tg.ready()
