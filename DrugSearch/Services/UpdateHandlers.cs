@@ -34,7 +34,6 @@ namespace DrugSearch.Services
             {
                 "/start" => StartAction(_botClient, message, cancellationToken),
                 "Inline mode" => StartInlineQuery(_botClient, message, cancellationToken),
-                "Test" => StartInlineQuery(_botClient, message, cancellationToken),
                 _ => SendInlineKeyboardWithWebApp(_botClient, message, cancellationToken)
             };
 
@@ -67,7 +66,7 @@ namespace DrugSearch.Services
 
                 var drug = message.Text?.Replace(' ', '-');
 
-                var webAppInfo = new WebAppInfo() { Url = "https://master--brilliant-blini-a90b82.netlify.app/" + drug};
+                var webAppInfo = new WebAppInfo() { Url = Bot.WebAppUrl + drug};
 
                 InlineKeyboardMarkup inlineKeyboard = new(InlineKeyboardButton.WithWebApp("Results", webAppInfo));
                 
@@ -118,16 +117,16 @@ namespace DrugSearch.Services
         {
             try
             {
+                List<InlineQueryResult> results = new();
+
                 var query = inlineQuery.Query ?? "test";
                 var article = new InlineQueryResultArticle(
                     id: "1",
                     title: query,
                     inputMessageContent: new InputTextMessageContent(query));
 
-
-                InlineQueryResult[] results = {
-                article
-            };
+                results.Add(article);
+                
 
                 await _botClient.AnswerInlineQueryAsync(
                     inlineQueryId: inlineQuery.Id,
@@ -139,7 +138,7 @@ namespace DrugSearch.Services
             }
             catch (Exception)
             {
-                await Console.Out.WriteLineAsync("Inline query exception");
+                Console.WriteLine("Inline query exception");
             }
         }
 
