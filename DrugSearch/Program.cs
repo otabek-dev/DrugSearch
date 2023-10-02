@@ -11,6 +11,7 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UpdateHandlers>();
+builder.Services.AddScoped<DrugSearchService>();
 
 builder.Services.AddDbContext<AppDbContext>();
 

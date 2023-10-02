@@ -9,6 +9,12 @@ namespace DrugSearch.Services
     public class UpdateHandlers
     {
         private TelegramBotClient _botClient = Bot.GetTelegramBot();
+        private DrugSearchService _drugSearchService;
+
+        public UpdateHandlers(DrugSearchService drugSearchService)
+        {
+            _drugSearchService = drugSearchService;
+        }
 
         public async Task HandleUpdateAsync(Update update, CancellationToken cancellationToken)
         {
@@ -84,10 +90,6 @@ namespace DrugSearch.Services
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithSwitchInlineQuery("Switch inline query"),
-                        },
-                        new[]
-                        {
                             InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Inline query current chat")
                         }
                     });
@@ -117,16 +119,27 @@ namespace DrugSearch.Services
         {
             try
             {
+                if (inlineQuery.Query is "") 
+                    return;
+
                 List<InlineQueryResult> results = new();
 
-                var query = inlineQuery.Query ?? "test";
-                var article = new InlineQueryResultArticle(
-                    id: "1",
-                    title: query,
-                    inputMessageContent: new InputTextMessageContent(query));
+                var drugs = _drugSearchService.GetDrugs(inlineQuery.Query);
 
-                results.Add(article);
-                
+                foreach (var drug in drugs)
+                {
+                    var article = new InlineQueryResultArticle(
+                    id: Guid.NewGuid().ToString(),
+                    title: drug.Name,
+                    inputMessageContent: new InputTextMessageContent(drug.Name));
+
+                    article.Description = drug.Description;
+                    article.ThumbnailUrl = "https://loremflickr.com/300/300/medicament";
+                    article.ThumbnailWidth = 300;
+                    article.ThumbnailHeight = 300;
+
+                    results.Add(article);
+                }
 
                 await _botClient.AnswerInlineQueryAsync(
                     inlineQueryId: inlineQuery.Id,
@@ -136,9 +149,9 @@ namespace DrugSearch.Services
                     cancellationToken: cancellationToken);
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine("Inline query exception");
+                Console.WriteLine(e.Message);
             }
         }
 

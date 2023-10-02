@@ -1,5 +1,7 @@
 ﻿using DrugSearch.DB;
 using DrugSearch.Models;
+using DrugSearch.ViewModel;
+using Korzh.EasyQuery.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,22 +18,42 @@ namespace DrugSearch.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public IEnumerable<Drug> Get()
-        {
-            var drugs = _context.Drugs.Include(d => d.DrugStore);
-            return drugs;
-        }
+        //[HttpGet]
+        //public IEnumerable<Drug> Get()
+        //{
+        //    var drugs = _context.Drugs.Include(d => d.DrugStore);
+            
+        //    return drugs;
+        //}
 
-        [HttpGet("{id}")]
-        public string Get(Guid id)
+        [HttpGet]
+        public IEnumerable<DrugViewModel> Get([FromQuery] string query)
         {
-            return "value";
+            var drugs = _context.Drugs
+                .FullTextSearchQuery(query)
+                .Include(d => d.DrugStore);
+
+            var result = new List<DrugViewModel>();
+            foreach(var drug in drugs)
+            {
+                result.Add(new()
+                {
+                    Name = drug.Name,
+                    Description = drug.Description,
+                    Price = drug.Price,
+                    DrugStoreName = drug.DrugStore.Name,
+                    DrugStoreAddress = drug.DrugStore.Address,
+                    DrugStoreContact = drug.DrugStore.Contacts
+                });
+            }
+
+            return result;
         }
 
         [HttpPost]
         public void Post([FromBody] string value)
         {
+
         }
 
         [HttpPut("{id}")]
