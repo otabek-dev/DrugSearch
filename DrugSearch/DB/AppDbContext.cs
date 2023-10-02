@@ -19,7 +19,7 @@ namespace DrugSearch.DB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            new AppDbConfig(modelBuilder).Configure();
         }
     }
 }

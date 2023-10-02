@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DrugSearch.DB;
+using DrugSearch.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrugSearch.Controllers
 {
@@ -6,10 +9,18 @@ namespace DrugSearch.Controllers
     [ApiController]
     public class DrugController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private AppDbContext _context;
+
+        public DrugController(AppDbContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
+        }
+
+        [HttpGet]
+        public IEnumerable<Drug> Get()
+        {
+            var drugs = _context.Drugs.Include(d => d.DrugStore);
+            return drugs;
         }
 
         [HttpGet("{id}")]

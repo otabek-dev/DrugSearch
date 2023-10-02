@@ -72,7 +72,7 @@ namespace DrugSearch.DB
                     Name = drug.Key,
                     Description = drug.Value,
                     Price = faker.Commerce.Price(),
-                    DrugStore = drugStores[faker.Random.Int(0, 30)]
+                    DrugStoreId = drugStores[faker.Random.Int(0, 29)].Id
                 };
 
                 _modelBuilder.Entity<Drug>().HasData(entity);
