@@ -1,4 +1,6 @@
+using DrugSearch.DB;
 using DrugSearch.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UpdateHandlers>();
+
+builder.Services.AddDbContext<AppDbContext>();
 
 var app = builder.Build();
 
