@@ -43,6 +43,8 @@ namespace DrugSearch.Services
                 _ => SendInlineKeyboardWithWebApp(_botClient, message, cancellationToken)
             };
 
+            
+
             Message sentMessage = await action;
 
             static async Task<Message> StartAction(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
@@ -72,7 +74,7 @@ namespace DrugSearch.Services
 
                 var drug = message.Text?.Replace(' ', '-');
 
-                var webAppInfo = new WebAppInfo() { Url = Bot.WebAppUrl + drug};
+                var webAppInfo = new WebAppInfo() { Url = $"{Bot.WebAppUrl}/{drug}"};
 
                 InlineKeyboardMarkup inlineKeyboard = new(InlineKeyboardButton.WithWebApp("Results", webAppInfo));
                 
@@ -138,20 +140,24 @@ namespace DrugSearch.Services
                     article.ThumbnailWidth = 300;
                     article.ThumbnailHeight = 300;
 
+                    var webAppInfo = new WebAppInfo() { Url = $"{Bot.WebAppUrl}/drug/{drug.Id}" };
+                    
+                    article.ReplyMarkup = new(InlineKeyboardButton.WithWebApp("Result", webAppInfo));
+
                     results.Add(article);
                 }
 
                 await _botClient.AnswerInlineQueryAsync(
                     inlineQueryId: inlineQuery.Id,
-                    results: results,
+                    results: results, 
                     cacheTime: 0,
                     isPersonal: true,
-                    cancellationToken: cancellationToken);
+                    cancellationToken: CancellationToken.None);
 
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
             }
         }
 

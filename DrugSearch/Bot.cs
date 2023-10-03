@@ -6,7 +6,7 @@ namespace DrugSearch
     {
         private static TelegramBotClient client { get; set; }
         private static string botToken { get; } = "6610907585:AAHOSkQBq6W7ewmpURSIvmXesRVZh6nBWc8";
-        public static string WebAppUrl { get; } = "https://master--brilliant-blini-a90b82.netlify.app/";
+        public static string WebAppUrl { get; } = "https://master--brilliant-blini-a90b82.netlify.app";
 
         public static TelegramBotClient GetTelegramBot()
         {

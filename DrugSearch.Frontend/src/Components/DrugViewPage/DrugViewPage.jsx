@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import "./DrugViewPage.css";
 import {useParams} from "react-router-dom";
 import DrugService from "../../API/DrugService.js";
+import {useTelegram} from "../../Hooks/useTelegram.js";
 
 const DrugViewPage = () => {
   const {id} = useParams();
@@ -14,6 +15,8 @@ const DrugViewPage = () => {
     "drugStoreAddress": "Erdmanstad:838 Kling Way",
     "drugStoreContact": "562.588.2644 x9055"
   });
+  const {tg} = useTelegram();
+
 
   const searchDrugById = async (id) => {
     const response = await DrugService.GetById(id)
@@ -24,6 +27,10 @@ const DrugViewPage = () => {
     // searchDrugById(id).then((data) => {
     //   setDrug(data)
     // })
+    tg.BackButton.show();
+    tg.BackButton.onClick(() => {
+      console.log("WORK")
+    })
   }, [])
 
   console.log(drug)
