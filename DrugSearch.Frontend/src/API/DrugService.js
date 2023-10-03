@@ -19,7 +19,7 @@ export default class DrugService {
           headers: {
             "ngrok-skip-browser-warning": "6024"}
         })
-    return response.data;
+    return response;
   }
 
 }

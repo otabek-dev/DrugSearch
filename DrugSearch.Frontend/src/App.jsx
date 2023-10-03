@@ -1,9 +1,9 @@
 import './App.css'
 import {Route, Routes} from "react-router-dom";
 import DrugList from "./Components/DrugList/DrugList.jsx";
-import DrugItem from "./Components/DrugItem/DrugItem.jsx";
 import {useEffect} from "react";
 import {useTelegram} from "./Hooks/useTelegram.js";
+import DrugViewPage from "./Components/DrugViewPage/DrugViewPage.jsx";
 
 function App() {
   const {tg} = useTelegram();
@@ -13,7 +13,7 @@ function App() {
   }, [])
 
   return (
-    <div>
+    <div className="App">
       <Routes>
         <Route
             path={":query"}
@@ -21,7 +21,7 @@ function App() {
         />
         <Route
             path={'item/:id'}
-            element={<DrugItem />}
+            element={<DrugViewPage />}
         />
       </Routes>
     </div>
