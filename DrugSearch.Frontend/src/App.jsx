@@ -6,11 +6,7 @@ import {useTelegram} from "./Hooks/useTelegram.js";
 import DrugViewPage from "./Components/DrugViewPage/DrugViewPage.jsx";
 
 function App() {
-  const {tg} = useTelegram();
 
-  useEffect(() => {
-    tg.ready();
-  }, [])
 
   return (
     <div className="App">

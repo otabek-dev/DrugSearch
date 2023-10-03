@@ -8,11 +8,14 @@
 
 .img {
     width: 100%;
-    background-image: url("https://loremflickr.com/300/300/medicament");
+    background-image: url("https://loremflickr.com/cache/resized/65535_50608049121_ca39c59dc6_q_140_100_nofilter.jpg");
     height: 100px;
     margin: 0 auto;
-    /*background: var(--tg-theme-button-color);*/
-    border-radius: 10px;
+    border-radius: 8px;
+}
+
+.name {
+    font-weight: bold;
 }
 
 .description {
