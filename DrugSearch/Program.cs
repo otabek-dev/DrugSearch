@@ -1,6 +1,5 @@
 using DrugSearch.DB;
 using DrugSearch.Services;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +10,7 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UpdateHandlers>();
-builder.Services.AddScoped<DrugSearchService>();
+builder.Services.AddScoped<DrugService>();
 
 builder.Services.AddDbContext<AppDbContext>();
 
@@ -24,6 +23,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 app.MapControllers();
 

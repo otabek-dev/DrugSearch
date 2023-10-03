@@ -1,9 +1,7 @@
 ﻿using DrugSearch.Services;
 using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot;
-using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace DrugSearch.Controllers
 {
@@ -21,8 +19,8 @@ namespace DrugSearch.Controllers
 
         [HttpPost]
         public async void Post(
-            [FromBody] Update update, 
-            [FromServices] UpdateHandlers handleUpdateService, 
+            [FromBody] Update update,
+            [FromServices] UpdateHandlers handleUpdateService,
             CancellationToken cancellationToken)
         {
             await handleUpdateService.HandleUpdateAsync(update, cancellationToken);

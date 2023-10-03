@@ -9,9 +9,9 @@ namespace DrugSearch.Services
     public class UpdateHandlers
     {
         private TelegramBotClient _botClient = Bot.GetTelegramBot();
-        private DrugSearchService _drugSearchService;
+        private DrugService _drugSearchService;
 
-        public UpdateHandlers(DrugSearchService drugSearchService)
+        public UpdateHandlers(DrugService drugSearchService)
         {
             _drugSearchService = drugSearchService;
         }
@@ -124,7 +124,7 @@ namespace DrugSearch.Services
 
                 List<InlineQueryResult> results = new();
 
-                var drugs = _drugSearchService.GetDrugs(inlineQuery.Query);
+                var drugs = _drugSearchService.SearchDrugs(inlineQuery.Query);
 
                 foreach (var drug in drugs)
                 {
