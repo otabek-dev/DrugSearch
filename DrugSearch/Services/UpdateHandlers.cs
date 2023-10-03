@@ -141,7 +141,6 @@ namespace DrugSearch.Services
                     article.ThumbnailHeight = 300;
 
                     var webAppInfo = new WebAppInfo() { Url = $"{Bot.WebAppUrl}/drug/{drug.Id}" };
-                    
                     article.ReplyMarkup = new(InlineKeyboardButton.WithWebApp("Result", webAppInfo));
 
                     results.Add(article);
@@ -152,12 +151,11 @@ namespace DrugSearch.Services
                     results: results, 
                     cacheTime: 0,
                     isPersonal: true,
-                    cancellationToken: CancellationToken.None);
-
+                    cancellationToken: cancellationToken);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
         }
 

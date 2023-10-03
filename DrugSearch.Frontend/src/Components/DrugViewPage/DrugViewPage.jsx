@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import "./DrugViewPage.css";
-import {useParams} from "react-router-dom";
+import {Navigate, useNavigate, useParams} from "react-router-dom";
 import DrugService from "../../API/DrugService.js";
 import {useTelegram} from "../../Hooks/useTelegram.js";
 
 const DrugViewPage = () => {
   const {id} = useParams();
+  const navigate = useNavigate();
   const [drug, setDrug] = useState({
     "id": "eb8a72f3-8bcb-4f43-bed4-320ce980e91b",
     "name": "Ciprofloxacin",
@@ -29,7 +30,7 @@ const DrugViewPage = () => {
     // })
     tg.BackButton.show();
     tg.BackButton.onClick(() => {
-      console.log("WORK")
+      navigate(-1)
     })
   }, [])
 
