@@ -31,6 +31,7 @@ const DrugViewPage = () => {
   return (
       <div>
         <h1>Drug view page</h1>
+        {id}
       </div>
   );
 };

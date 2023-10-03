@@ -1,10 +1,7 @@
 import './DrugItem.css';
-import Button from "../Button/Button.jsx";
+import MyLink from "../MyLink/MyLink.jsx";
 
 const DrugItem = ({drug, className}) => {
-  const onClickHandler = () => {
-    console.log('clicked')
-  };
 
   return (
     <div className={'drug ' + className}>
@@ -14,9 +11,7 @@ const DrugItem = ({drug, className}) => {
       <div className={'price'}>
         <span>Price: <b>{drug.price}</b></span>
       </div>
-      <Button className={'view-btn'} onClick={onClickHandler}>
-        View
-      </Button>
+      <MyLink className={'view-btn'} to={'/drug/' + drug.id} value={'View'} />
     </div>
   );
 };

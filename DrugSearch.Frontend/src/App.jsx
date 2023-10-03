@@ -1,13 +1,9 @@
 import './App.css'
 import {Route, Routes} from "react-router-dom";
 import DrugList from "./Components/DrugList/DrugList.jsx";
-import {useEffect} from "react";
-import {useTelegram} from "./Hooks/useTelegram.js";
 import DrugViewPage from "./Components/DrugViewPage/DrugViewPage.jsx";
 
 function App() {
-
-
   return (
     <div className="App">
       <Routes>
@@ -16,7 +12,7 @@ function App() {
             element={<DrugList />}
         />
         <Route
-            path={'item/:id'}
+            path={'drug/:id'}
             element={<DrugViewPage />}
         />
       </Routes>

@@ -21,7 +21,6 @@ const DrugList = () => {
     },
   ])
 
-
   const searchDrugByQuery = async (query) => {
     const response = await DrugService.SearchByQuery(query)
     return response.data
@@ -32,13 +31,13 @@ const DrugList = () => {
        setDrugs(data)
        tg.ready();
      })
-  }, [])
+  }, [query])
 
   console.log(drugs)
 
   return (
       <>
-        <h1 className={'item'}>Query: {query}</h1>
+        <h1 style={{textAlign: "center", marginTop: "10px"}}>Search: {query}</h1>
         <div className={'list'}>
           {drugs.map(drug => (
               <DrugItem drug={drug} className={'item'} key={drug.id}/>
