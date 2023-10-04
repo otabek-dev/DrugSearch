@@ -7,11 +7,11 @@ const HomePage = () => {
   const navigate = useNavigate()
   useEffect(() => {
     if (startParams !== undefined)
-      navigate('/pi')
+      navigate(`/drug/${startParams}`)
   }, [])
   return (
       <div>
-        {startParams}
+        <h1>Not found!</h1>
       </div>
   );
 };
