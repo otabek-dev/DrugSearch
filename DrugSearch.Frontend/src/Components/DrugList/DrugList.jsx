@@ -3,8 +3,9 @@ import {useParams} from "react-router-dom";
 import DrugService from "../../API/DrugService.js";
 import DrugItem from "../DrugItem/DrugItem.jsx";
 import {useTelegram} from "../../Hooks/useTelegram.js";
-
-const tg = window.Telegram.WebApp
+import {useFetching} from "../../Hooks/useFetching.js";
+import Loader from "../Loader/Loader.jsx";
+import './DrugList.css';
 
 const DrugList = () => {
   const {tg} = useTelegram();
@@ -21,30 +22,31 @@ const DrugList = () => {
     },
   ])
 
-  const searchDrugByQuery = async (query) => {
+  const [fetchDrugByQuery, isLoading, error] = useFetching(async (query) => {
     const response = await DrugService.SearchByQuery(query)
-    return response.data
-  }
+    setDrugs(response.data)
+  })
 
   useEffect( () => {
-     searchDrugByQuery(query).then((data) => {
-       setDrugs(data)
+    fetchDrugByQuery(query).then(() => {
        tg.ready();
      })
   }, [])
 
-  console.log(drugs)
-
   return (
-      <>
+      <div className={'start-section'}>
         <h1 style={{textAlign: "center", marginTop: "10px"}}>Search: {query}</h1>
-        <div className={'list'}>
-          {drugs.map(drug => (
-              <DrugItem drug={drug} className={'item'} key={drug.id}/>
-          ))}
-        </div>
-      </>
+        {isLoading
+          ? <Loader/>
+          : <div className={'list'}>
+              {drugs.map(drug => (
+                  <DrugItem drug={drug} className={'item'} key={drug.id}/>
+              ))}
+            </div>
+        }
+      </div>
   );
 };
 
 export default DrugList;
+
