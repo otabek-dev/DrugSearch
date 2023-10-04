@@ -1,9 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useTelegram} from "../../Hooks/useTelegram.js";
+import {useNavigate} from "react-router-dom";
 
 const HomePage = () => {
   const {startParams} = useTelegram()
-  console.log(startParams)
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (startParams !== undefined)
+      navigate('/pi')
+  }, [])
   return (
       <div>
         {startParams}
