@@ -12,12 +12,10 @@ namespace DrugSearch.Controllers
     [ApiController]
     public class DrugController : ControllerBase
     {
-        private AppDbContext _context;
         private DrugService _drugSearchService;
 
-        public DrugController(AppDbContext context, DrugService drugSearchService)
+        public DrugController(DrugService drugSearchService)
         {
-            _context = context;
             _drugSearchService = drugSearchService;
         }
 

@@ -69,7 +69,7 @@ namespace DrugSearch.Services
 
                 return await botClient.SendTextMessageAsync(
                     chatId: message.Chat.Id,
-                    text: "Welcome to Telegram Bot DrugSearch.\nSend a drug name or press the button to start Inline Query:",
+                    text: "Welcome to DrugSearch bot.\nSend a drug name or press the button to start Inline Query:",
                     replyMarkup: inlineKeyboard,
                     cancellationToken: cancellationToken);
             }
@@ -122,6 +122,7 @@ namespace DrugSearch.Services
                 foreach (var drug in drugs)
                 {
                     var resultTextMarkdown = $"[{drug.Name}]({Bot.BotUrlWithStartApp}{drug.Id})\n\n{drug.Description}";
+
                     var article = new InlineQueryResultArticle(
                     id: Guid.NewGuid().ToString(),
                     title: drug.Name,
