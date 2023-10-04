@@ -7,6 +7,6 @@
         public required string Address { get; set; }
         public required string Contacts { get; set; }
 
-        public List<Drug> drugs { get; set; } = new();
+        public List<DrugPriceInDrugStore> PricesForDrugs { get; set; } = new();
     }
 }

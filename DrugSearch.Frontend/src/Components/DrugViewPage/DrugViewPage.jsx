@@ -16,7 +16,7 @@ const DrugViewPage = () => {
     "drugStoreAddress": "Erdmanstad:838 Kling Way",
     "drugStoreContact": "562.588.2644 x9055"
   });
-  const {tg} = useTelegram();
+  const {tg, webAppData} = useTelegram();
 
 
   const searchDrugById = async (id) => {
@@ -28,6 +28,7 @@ const DrugViewPage = () => {
     // searchDrugById(id).then((data) => {
     //   setDrug(data)
     // })
+    console.log(webAppData)
     tg.BackButton.show();
     tg.BackButton.onClick(() => {
       navigate(-1)
