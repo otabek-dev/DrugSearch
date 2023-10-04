@@ -21,29 +21,29 @@ namespace DrugSearch.Services
             var handler = update switch
             {
                 { Message: { } message } => BotOnMessageReceived(message, cancellationToken),
+                { InlineQuery: { } inlineQuery } => BotOnInlineQueryReceived(inlineQuery, cancellationToken),
                 { EditedMessage: { } message } => BotOnMessageReceived(message, cancellationToken),
                 { CallbackQuery: { } callbackQuery } => BotOnCallbackQueryReceived(callbackQuery, cancellationToken),
-                { InlineQuery: { } inlineQuery } => BotOnInlineQueryReceived(inlineQuery, cancellationToken),
                 { ChosenInlineResult: { } chosenInlineResult } => BotOnChosenInlineResultReceived(chosenInlineResult, cancellationToken),
                 _ => UnknownUpdateHandlerAsync(update, cancellationToken)
             };
 
             await handler;
         }
-
+        
         private async Task BotOnMessageReceived(Message message, CancellationToken cancellationToken)
         {
             if (message.Text is not { } messageText)
                 return;
 
+            if (message.ViaBot is not null)
+                return;
+            
             var action = messageText switch
             {
                 "/start" => StartAction(_botClient, message, cancellationToken),
-                "Inline mode" => StartInlineQuery(_botClient, message, cancellationToken),
                 _ => SendInlineKeyboardWithWebApp(_botClient, message, cancellationToken)
             };
-
-            
 
             Message sentMessage = await action;
 
@@ -54,14 +54,23 @@ namespace DrugSearch.Services
                     chatAction: ChatAction.Typing,
                     cancellationToken: cancellationToken);
 
-                ReplyKeyboardMarkup replyKeyboard = new( new KeyboardButton("Inline mode"));
-
-                replyKeyboard.ResizeKeyboard = true;
+                InlineKeyboardMarkup inlineKeyboard = new(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithSwitchInlineQuery("Switch inline query")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Inline query current chat")
+                        }
+                    });
 
                 return await botClient.SendTextMessageAsync(
                     chatId: message.Chat.Id,
-                    text: "Welcome to Telegram Bot DrugSearch.\nSend a drug name or select a section:",
-                    replyMarkup: replyKeyboard,
+                    text: "Welcome to Telegram Bot DrugSearch.\nSend a drug name or press the button to start Inline Query:",
+                    replyMarkup: inlineKeyboard,
                     cancellationToken: cancellationToken);
             }
 
@@ -81,24 +90,6 @@ namespace DrugSearch.Services
                 return await botClient.SendTextMessageAsync(
                     chatId: message.Chat.Id,
                     text: "Click on the button to see the results",
-                    replyMarkup: inlineKeyboard,
-                    cancellationToken: cancellationToken);
-            }
-
-            static async Task<Message> StartInlineQuery(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
-            {
-                InlineKeyboardMarkup inlineKeyboard = new(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Inline query current chat")
-                        }
-                    });
-
-                return await botClient.SendTextMessageAsync(
-                    chatId: message.Chat.Id,
-                    text: "Press the button to start Inline Query or\nSend a drug name or select a section:",
                     replyMarkup: inlineKeyboard,
                     cancellationToken: cancellationToken);
             }
@@ -130,20 +121,18 @@ namespace DrugSearch.Services
 
                 foreach (var drug in drugs)
                 {
+                    var resultTextMarkdown = $"[{drug.Name}]({Bot.BotUrlWithStartApp}{drug.Id})\n\n{drug.Description}";
                     var article = new InlineQueryResultArticle(
                     id: Guid.NewGuid().ToString(),
                     title: drug.Name,
-                    inputMessageContent: new InputTextMessageContent(drug.Name));
+                    inputMessageContent: new InputTextMessageContent(resultTextMarkdown) { ParseMode = ParseMode.Markdown});
 
                     article.Description = drug.Description;
                     article.ThumbnailUrl = "https://loremflickr.com/300/300/medicament";
                     article.ThumbnailWidth = 300;
                     article.ThumbnailHeight = 300;
 
-                    var webAppInfo = new WebAppInfo() { Url = $"{Bot.WebAppUrl}/drug/{drug.Id}" };
-                    article.ReplyMarkup = new(InlineKeyboardButton.WithWebApp("Result", webAppInfo));
-
-                    results.Add(article);
+                    results.Add(article); 
                 }
 
                 await _botClient.AnswerInlineQueryAsync(
