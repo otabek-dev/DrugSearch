@@ -1,9 +1,9 @@
 import React from 'react';
-import './Loader.css';
+import cl from './loader.module.css';
 
 const Loader = () => {
   return (
-      <div className={'loader'}>
+      <div className={cl.loader}>
 
       </div>
   );

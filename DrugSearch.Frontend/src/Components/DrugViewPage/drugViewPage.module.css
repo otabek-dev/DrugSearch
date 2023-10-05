@@ -10,8 +10,14 @@
     margin-bottom: 10px;
 }
 
+.startSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .drugView {
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-direction: row;
     border: 1px solid var(--tg-theme-button-color);
@@ -20,7 +26,7 @@
 }
 
 .img {
-    width: 100%;
     border-radius: 8px;
-    margin: 0 auto 7px;
+    float:left; /* Выравнивание по левому краю */
+    margin: 7px 7px 7px 0; /* Отступы вокруг картинки */
 }
