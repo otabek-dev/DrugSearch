@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrugSearch.Backend", "DrugSearch\DrugSearch.Backend.csproj", "{2DEA7046-A285-44A2-94D0-875EA9B449FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrugSearch.Backend", "DrugSearch.Backend\DrugSearch.Backend.csproj", "{E25825EB-3308-4C22-8B41-36BD2B16AB66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2DEA7046-A285-44A2-94D0-875EA9B449FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DEA7046-A285-44A2-94D0-875EA9B449FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DEA7046-A285-44A2-94D0-875EA9B449FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DEA7046-A285-44A2-94D0-875EA9B449FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E25825EB-3308-4C22-8B41-36BD2B16AB66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E25825EB-3308-4C22-8B41-36BD2B16AB66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E25825EB-3308-4C22-8B41-36BD2B16AB66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E25825EB-3308-4C22-8B41-36BD2B16AB66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
