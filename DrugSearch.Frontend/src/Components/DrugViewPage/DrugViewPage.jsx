@@ -44,6 +44,7 @@ const DrugViewPage = ({isActiveBackButton}) => {
     // }
 
     tg.BackButton.show();
+    tg.BackButton.offEvent();
     // tg.BackButton.onClick(() => {
     //   navigate(-1)
     // })
