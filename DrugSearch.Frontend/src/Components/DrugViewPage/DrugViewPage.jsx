@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import classes from './drugViewPage.module.css';
 import {useNavigate, useParams} from "react-router-dom";
 import DrugService from "../../API/DrugService.js";
 import {useTelegram} from "../../Hooks/useTelegram.js";
 import {useFetching} from "../../Hooks/useFetching.js";
 
-const DrugViewPage = () => {
+const DrugViewPage = ({isActiveBackButton}) => {
   const {id} = useParams();
   const navigate = useNavigate();
-  const [drugs, setDrugs] = useState({
+  const [drug, setDrug] = useState({
     "id": "",
     "name": "",
     "description": "",
@@ -25,40 +25,65 @@ const DrugViewPage = () => {
 
   const [fetchDrugPriceInDrugStoreById, isLoading, error] = useFetching(async (id) => {
     const response = await DrugService.GetById(id)
-    setDrugs(response.data)
+    setDrug(response.data)
   })
 
   useEffect( () => {
     fetchDrugPriceInDrugStoreById(id).then(() => {
       tg.ready();
-      console.log(drugs)
+      console.log(drug)
     })
   }, [])
 
   useEffect(() => {
-    console.log(webAppData)
+    // if (isActiveBackButton) {
+    //   tg.BackButton.show();
+    // }
+    // else {
+    //   tg.BackButton.hide()
+    // }
+
     tg.BackButton.show();
-    tg.BackButton.onClick(() => {
-      tg.BackButton.hidden()
-      navigate(-1)
-    })
+    // tg.BackButton.onClick(() => {
+    //   navigate(-1)
+    // })
+
   }, [])
 
-  console.log(drugs)
+  const onSendData = useCallback(() => {
+    navigate(-1)
+  }, [])
+
+  useEffect(() => {
+    tg.onEvent('mainButtonClicked', onSendData)
+    return () => {
+      tg.offEvent('mainButtonClicked', onSendData)
+    }
+  }, [])
 
   return (
-      <div>
+      <div className={classes.startSection}>
+
         <div className={classes.drugView}>
-          <img
-              className={classes.img}
-              src="https://loremflickr.com/cache/resized/65535_50608049121_ca39c59dc6_q_140_100_nofilter.jpg"
-              alt="test"
-          />
-          <div className={classes.item}>
-            <strong>{drugs.name}</strong> <br/>
-            {drugs.description}
-          </div>
+          <p>
+            <img
+                className={classes.img}
+                src="https://loremflickr.com/cache/resized/65535_50608049121_ca39c59dc6_q_140_100_nofilter.jpg"
+                alt="test"
+            />
+            <strong>{drug.name}</strong> <br/>
+            {drug.description}
+          </p>
         </div>
+
+        {drug.drugStoreViewModel.map((ds) => (
+            <div className={classes.drugView} key={ds.price}>
+              {ds.price} <br/>
+              {ds.drugStoreName}
+              {ds.drugStoreAddress}
+              {ds.drugStoreContact}
+            </div>
+        ))}
       </div>
   );
 };

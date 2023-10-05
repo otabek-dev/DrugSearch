@@ -15,7 +15,7 @@ function App() {
         />
         <Route
             path={'drug/:id'}
-            element={<DrugViewPage />}
+            element={<DrugViewPage isActiveBackButton={true}/>}
         />
       </Routes>
     </div>

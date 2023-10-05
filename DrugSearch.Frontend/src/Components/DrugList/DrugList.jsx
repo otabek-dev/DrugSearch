@@ -5,7 +5,7 @@ import DrugItem from "../DrugItem/DrugItem.jsx";
 import {useTelegram} from "../../Hooks/useTelegram.js";
 import {useFetching} from "../../Hooks/useFetching.js";
 import Loader from "../Loader/Loader.jsx";
-import './DrugList.css';
+import cl from './drugList.module.css';
 
 const DrugList = () => {
   const {tg} = useTelegram();
@@ -30,13 +30,13 @@ const DrugList = () => {
   }, [])
 
   return (
-      <div className={'start-section'}>
+      <div className={cl.startSection}>
         <h1 style={{textAlign: "center", marginTop: "10px"}}>Search: {query}</h1>
         {isLoading
           ? <Loader/>
-          : <div className={'list'}>
+          : <div className={cl.list}>
               {drugs.map(drug => (
-                  <DrugItem drug={drug} className={'item'} key={drug.id}/>
+                  <DrugItem drug={drug} className={cl.item} key={drug.id}/>
               ))}
             </div>
         }

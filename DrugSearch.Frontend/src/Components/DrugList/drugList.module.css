@@ -1,0 +1,17 @@
+.startSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.item {
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
