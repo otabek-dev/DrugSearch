@@ -15,15 +15,18 @@ namespace DrugSearch.Services
             _context = dbContext;
         }
 
-        public DrugViewModel GetDrugById(Guid id)
+        public List<DrugPriceInDrugStoreViewModel> GetDrugPricesByDrugId(Guid id)
         {
             var drug = _context.Drugs
                 .Where(d => d.Id == id)
+                .Include(d => d.PricesInDrugStores)
+                    .ThenInclude(prds =>  prds.DrugStore)
                 .FirstOrDefault();
-            if (drug is null) 
+            if (drug is null)
                 return null;
 
-            _context.DrugStores.Where(ds => ds.Id == drug.DrugStoreId).Load();
+           // _context.DrugPriceInDrugStores.Where(ds => ds.DrugId == drug.Id).Load();
+            
             return GetDrugViewModel(drug);
         }
 
@@ -31,25 +34,36 @@ namespace DrugSearch.Services
         {
             var result = _context.Drugs
                 .FullTextSearchQuery(query)
-                .Include(d => d.DrugStore)
                 .ToList()
-                .Select(GetDrugViewModel);
+                .Select(drug => new DrugViewModel()
+                {
+                    Id = drug.Id,
+                    Name = drug.Name,
+                    Description = drug.Description
+                });
 
             return result.ToList();
         }
 
-        private DrugViewModel GetDrugViewModel(Drug drug)
+        private List<DrugPriceInDrugStoreViewModel> GetDrugViewModel(Drug drug)
         {
-            return new()
+            var drugViewModel = new List<DrugPriceInDrugStoreViewModel>();
+
+            foreach (var drugPrice in drug.PricesInDrugStores)
             {
-                Id = drug.Id,
-                Name = drug.Name,
-                Description = drug.Description,
-                Price = drug.Price,
-                DrugStoreName = drug.DrugStore.Name,
-                DrugStoreAddress = drug.DrugStore.Address,
-                DrugStoreContact = drug.DrugStore.Contacts
-            };
+                drugViewModel.Add(new()
+                {
+                    Id = drug.Id,
+                    Name = drug.Name,
+                    Description = drug.Description,
+                    Price = drugPrice.Price,
+                    DrugStoreName = drugPrice.DrugStore?.Name,
+                    DrugStoreAddress = drugPrice.DrugStore?.Address,
+                    DrugStoreContact = drugPrice.DrugStore?.Contacts
+                });
+            }
+
+            return drugViewModel;
         }
     }
 }

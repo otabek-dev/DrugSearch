@@ -1,5 +1,6 @@
 ﻿using DrugSearch.Models;
 using Microsoft.EntityFrameworkCore;
+using Bogus;
 
 namespace DrugSearch.DB
 {
@@ -12,7 +13,7 @@ namespace DrugSearch.DB
             _modelBuilder = modelBuilder;
         }
 
-        private static Dictionary<string, string> drugs = new() 
+        private static Dictionary<string, string> drugsStatic = new() 
         {
             {"Paracetamol", "Paracetamol is a common pain reliever and fever reducer."},
             {"Ibuprofen", "Ibuprofen is a nonsteroidal anti-inflammatory drug (NSAID) used to relieve pain, reduce inflammation, and lower fever."},
@@ -41,15 +42,18 @@ namespace DrugSearch.DB
             {"Ranitidine", "Ranitidine is an H2 blocker used to reduce stomach acid and relieve conditions like heartburn and ulcers."},
             {"Hydrocodone", "Hydrocodone is an opioid pain medication used to relieve moderate to severe pain."},
             {"Tramadol", "Tramadol is a synthetic opioid used to treat moderate to severe pain."},
+            {"Piracetam", "Has a positive effect on brain metabolic processes, increases the concentration of ATP in brain tissue" }
         };
 
         public void Configure()
         {
+            Random random = new Random();
             var drugStores = new List<DrugStore>();
+            var drugs = new List<Drug>();
+            var faker = new Faker();
 
             for (int i = 0; i < 30; i++)
             {
-                var faker = new Bogus.Faker();
                 var drugStore = new DrugStore()
                 {
                     Id = Guid.NewGuid(),
@@ -62,20 +66,34 @@ namespace DrugSearch.DB
                 _modelBuilder.Entity<DrugStore>().HasData(drugStore);
             }
 
-            foreach(var drug in drugs)
+            foreach(var drug in drugsStatic)
             {
-                var faker = new Bogus.Faker();
-
                 var entity = new Drug()
                 {
                     Id = Guid.NewGuid(),
                     Name = drug.Key,
                     Description = drug.Value,
-                    Price = faker.Commerce.Price(),
-                    DrugStoreId = drugStores[faker.Random.Int(0, 29)].Id
                 };
 
+                drugs.Add(entity);
                 _modelBuilder.Entity<Drug>().HasData(entity);
+            }
+
+            foreach (var drugStore in drugStores)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    var randomDrug = drugs.ElementAt(random.Next(drugs.Count));
+                    var drugPriceInDrugStore = new DrugPriceInDrugStore()
+                    {
+                        Id = Guid.NewGuid(),
+                        DrugId = randomDrug.Id,
+                        DrugStoreId = drugStore.Id,
+                        Price = faker.Commerce.Price(5, 30)
+                    };
+
+                    _modelBuilder.Entity<DrugPriceInDrugStore>().HasData(drugPriceInDrugStore);
+                }
             }
         }
     }

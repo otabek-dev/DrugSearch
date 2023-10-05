@@ -7,7 +7,7 @@ namespace DrugSearch.Models
         public Guid Id { get; set; }
         public Guid DrugId { get; set; }
         public Guid DrugStoreId { get; set; }
-        public decimal Price { get; set; }
+        public required string Price { get; set; }
 
         [JsonIgnore]
         public Drug? Drug { get; set; }

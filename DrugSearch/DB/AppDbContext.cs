@@ -9,8 +9,9 @@ namespace DrugSearch.DB
         {
         }
 
-        public DbSet<DrugStore> DrugStores { get; set; }
         public DbSet<Drug> Drugs { get; set; }
+        public DbSet<DrugStore> DrugStores { get; set; }
+        public DbSet<DrugPriceInDrugStore> DrugPriceInDrugStores { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
