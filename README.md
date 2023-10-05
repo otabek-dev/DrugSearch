@@ -1,1 +1,1 @@
-# DrugSearch.Backend
+# DrugSearch bot
