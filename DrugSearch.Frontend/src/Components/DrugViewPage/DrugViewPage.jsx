@@ -21,7 +21,7 @@ const DrugViewPage = ({isActiveBackButton}) => {
       },
     ]
   });
-  const {tg, webAppData} = useTelegram();
+  const {tg} = useTelegram();
 
   const [fetchDrugPriceInDrugStoreById, isLoading, error] = useFetching(async (id) => {
     const response = await DrugService.GetById(id)
@@ -50,14 +50,10 @@ const DrugViewPage = ({isActiveBackButton}) => {
 
   }, [])
 
-  const onSendData = useCallback(() => {
-    navigate(-1)
-  }, [])
-
   useEffect(() => {
-    tg.onEvent('mainButtonClicked', onSendData)
+    tg.onEvent('backButtonClicked', navigate(-1))
     return () => {
-      tg.offEvent('mainButtonClicked', onSendData)
+      tg.offEvent('backButtonClicked', navigate(-1))
     }
   }, [])
 
