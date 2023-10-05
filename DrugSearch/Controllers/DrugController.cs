@@ -20,7 +20,7 @@ namespace DrugSearch.Controllers
         }
 
         [HttpGet("{id}")]
-        public List<DrugPriceInDrugStoreViewModel> Get(Guid id)
+        public DrugPriceInDrugStoreViewModel Get(Guid id)
         {
             var result = _drugSearchService.GetDrugPricesByDrugId(id);
             return result;

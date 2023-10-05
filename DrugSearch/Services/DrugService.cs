@@ -15,18 +15,16 @@ namespace DrugSearch.Services
             _context = dbContext;
         }
 
-        public List<DrugPriceInDrugStoreViewModel> GetDrugPricesByDrugId(Guid id)
+        public DrugPriceInDrugStoreViewModel GetDrugPricesByDrugId(Guid id)
         {
             var drug = _context.Drugs
                 .Where(d => d.Id == id)
                 .Include(d => d.PricesInDrugStores)
-                    .ThenInclude(prds =>  prds.DrugStore)
+                    .ThenInclude(prds => prds.DrugStore)
                 .FirstOrDefault();
             if (drug is null)
                 return null;
 
-           // _context.DrugPriceInDrugStores.Where(ds => ds.DrugId == drug.Id).Load();
-            
             return GetDrugViewModel(drug);
         }
 
@@ -45,17 +43,20 @@ namespace DrugSearch.Services
             return result.ToList();
         }
 
-        private List<DrugPriceInDrugStoreViewModel> GetDrugViewModel(Drug drug)
+        private DrugPriceInDrugStoreViewModel GetDrugViewModel(Drug drug)
         {
-            var drugViewModel = new List<DrugPriceInDrugStoreViewModel>();
+            var drugViewModel = new DrugPriceInDrugStoreViewModel() 
+            {
+                Id = drug.Id,
+                Name = drug.Name,
+                Description = drug.Description,
+                DrugStoreViewModel = new()
+            };
 
             foreach (var drugPrice in drug.PricesInDrugStores)
             {
-                drugViewModel.Add(new()
+                drugViewModel.DrugStoreViewModel.Add(new()
                 {
-                    Id = drug.Id,
-                    Name = drug.Name,
-                    Description = drug.Description,
                     Price = drugPrice.Price,
                     DrugStoreName = drugPrice.DrugStore?.Name,
                     DrugStoreAddress = drugPrice.DrugStore?.Address,

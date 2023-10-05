@@ -1,6 +1,6 @@
 import React from 'react';
-import "./MyLink.css"
 import {Link} from "react-router-dom";
+import mcl from "./myLink.module.css"
 
 const MyLink = ({to, value, ...props}) => {
   return (
@@ -8,7 +8,7 @@ const MyLink = ({to, value, ...props}) => {
         <Link
             to={to}
             children={value}
-            className={'my-link ' + props.className}
+            className={mcl.myLink + ' ' + props.className}
         />
       </>
   );
