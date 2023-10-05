@@ -10,6 +10,7 @@
 .img {
     width: 100%;
     background-image: url("https://loremflickr.com/cache/resized/65535_50608049121_ca39c59dc6_q_140_100_nofilter.jpg");
+    background-repeat: no-repeat;
     height: 100px;
     border-radius: 8px;
     margin: 0 auto 7px;

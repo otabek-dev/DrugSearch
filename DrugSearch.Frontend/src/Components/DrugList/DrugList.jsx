@@ -14,11 +14,7 @@ const DrugList = () => {
     {
       "id": "",
       "name": "",
-      "description": "",
-      "price": "",
-      "drugStoreName": "",
-      "drugStoreAddress": "",
-      "drugStoreContact": ""
+      "description": ""
     },
   ])
 
