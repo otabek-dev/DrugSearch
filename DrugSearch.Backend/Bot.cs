@@ -5,9 +5,22 @@ namespace DrugSearch
     public static class Bot
     {
         private static TelegramBotClient client { get; set; }
-        private static string botToken { get; } = "6610907585:AAHOSkQBq6W7ewmpURSIvmXesRVZh6nBWc8";
-        public static string WebAppUrl { get; } = "https://master--brilliant-blini-a90b82.netlify.app";
-        public static string BotUrlWithStartApp { get; } = "https://t.me/MiniDrugSearch_bot/drugapp?startapp=";
+        private static IConfiguration _configuration { get; set; }
+        private static string botToken { get; }
+        public static string WebAppUrl { get; }
+        public static string BotUrlWithStartApp { get; }
+
+        static Bot()
+        {
+            var configurationBuilder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json");
+
+            _configuration = configurationBuilder.Build();
+            botToken = _configuration["BotToken"];
+            WebAppUrl = _configuration["WebAppUrl"];
+            BotUrlWithStartApp = _configuration["BotUrlWithStartApp"];
+        }
 
         public static TelegramBotClient GetTelegramBot()
         {

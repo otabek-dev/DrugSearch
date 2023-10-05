@@ -5,8 +5,10 @@ namespace DrugSearch.DB
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        private IConfiguration _configuration;
+        public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration) : base(options)
         {
+            _configuration = configuration;
         }
 
         public DbSet<Drug> Drugs { get; set; }
@@ -15,7 +17,7 @@ namespace DrugSearch.DB
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost; Port=5432; Database=DrugDb; Username=postgres; Password=5437721o");
+            optionsBuilder.UseNpgsql(_configuration["DbConnDigitalOcean"]);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

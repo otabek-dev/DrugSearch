@@ -1,6 +1,5 @@
 ﻿using DrugSearch.Services;
 using Microsoft.AspNetCore.Mvc;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace DrugSearch.Controllers
@@ -9,8 +8,6 @@ namespace DrugSearch.Controllers
     [Route("/")]
     public class BotController : ControllerBase
     {
-        private TelegramBotClient bot = Bot.GetTelegramBot();
-
         [HttpGet]
         public string Get()
         {
