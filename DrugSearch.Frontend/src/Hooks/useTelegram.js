@@ -11,6 +11,6 @@ export function useTelegram() {
     webAppData: tg.initDataUnsafe,
     user: tg.initDataUnsafe?.user,
     queryId: tg.initDataUnsafe?.query_id,
-    startParams: tg.initDataUnsafe?.start_param
+    startParam: tg.initDataUnsafe?.start_param
   }
 }

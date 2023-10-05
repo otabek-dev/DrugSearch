@@ -6,7 +6,7 @@ import HomePage from "./Components/HomePage/HomePage.jsx";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Routes>
         <Route path={"/"} element={<HomePage />}/>
         <Route

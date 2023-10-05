@@ -3,11 +3,11 @@ import {useTelegram} from "../../Hooks/useTelegram.js";
 import {useNavigate} from "react-router-dom";
 
 const HomePage = () => {
-  const {startParams} = useTelegram()
+  const {startParam} = useTelegram()
   const navigate = useNavigate()
   useEffect(() => {
-    if (startParams !== undefined)
-      navigate(`/drug/${startParams}`)
+    if (startParam !== undefined)
+      navigate(`/drug/${startParam}`)
   }, [])
   return (
       <div>

@@ -1,9 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import classes from './drugViewPage.module.css';
 import {useNavigate, useParams} from "react-router-dom";
 import DrugService from "../../API/DrugService.js";
 import {useTelegram} from "../../Hooks/useTelegram.js";
 import {useFetching} from "../../Hooks/useFetching.js";
+import Loader from "../Loader/Loader.jsx";
 
 const DrugViewPage = ({isActiveBackButton}) => {
   const {id} = useParams();
@@ -52,37 +53,34 @@ const DrugViewPage = ({isActiveBackButton}) => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   tg.onEvent('backButtonClicked', () => {
-  //     navigate(-1)
-  //     tg.BackButton.hide()
-  //     console.log('1')
-  //   })
-  // }, [])
-
   return (
-      <div className={classes.startSection}>
+      <div style={{display: "flex",justifyContent: "center"}}>
+        {
+          isLoading
+            ? <Loader />
+            : <div className={classes.startSection}>
+                <div className={classes.drugView}>
+                  <p>
+                    <img
+                        className={classes.img}
+                        src="/drug.png"
+                        alt="test"
+                    />
+                    <strong>{drug.name}</strong> <br/>
+                    {drug.description}
+                  </p>
+                </div>
 
-        <div className={classes.drugView}>
-          <p>
-            <img
-                className={classes.img}
-                src="https://loremflickr.com/cache/resized/65535_50608049121_ca39c59dc6_q_140_100_nofilter.jpg"
-                alt="test"
-            />
-            <strong>{drug.name}</strong> <br/>
-            {drug.description}
-          </p>
-        </div>
-
-        {drug.drugStoreViewModel.map((ds) => (
-            <div className={classes.drugView} key={ds.price}>
-              {ds.price} <br/>
-              {ds.drugStoreName}
-              {ds.drugStoreAddress}
-              {ds.drugStoreContact}
-            </div>
-        ))}
+                {drug.drugStoreViewModel.map((ds) => (
+                    <div className={classes.drugStoreView} key={ds.price}>
+                      <strong>Price: </strong>{ds.price} <br/>
+                      <strong>Drug store: </strong>{ds.drugStoreName} <br/>
+                      <strong>Address: </strong>{ds.drugStoreAddress} <br/>
+                      <strong>Contact: </strong>{ds.drugStoreContact} <br/>
+                    </div>
+                ))}
+              </div>
+        }
       </div>
   );
 };
