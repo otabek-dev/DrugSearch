@@ -36,32 +36,29 @@ const DrugViewPage = ({isActiveBackButton}) => {
   }, [])
 
   useEffect(() => {
-    // if (isActiveBackButton) {
-    //   tg.BackButton.show();
-    // }
-    // else {
-    //   tg.BackButton.hide()
-    // }
-
-    tg.BackButton.show();
-    // tg.BackButton.onClick(() => {
-    //   navigate(-1)
-    // })
-
-  }, [])
-
-  useEffect(() => {
-    tg.onEvent('backButtonClicked', () => {
-      navigate(-1)
-      tg.BackButton.hide()
-      console.log('1')
-    })
-    return () => {
-      tg.offEvent('backButtonClicked', () => {
-        console.log('2')
+    if (navigate.length >= 2) {
+      tg.BackButton.show();
+      tg.BackButton.onClick(() => {
+        navigate(-1)
+        tg.BackButton.hide()
       })
     }
+    else {
+      tg.BackButton.hide()
+    }
+
+    return () => {
+      tg.BackButton.offClick()
+    }
   }, [])
+
+  // useEffect(() => {
+  //   tg.onEvent('backButtonClicked', () => {
+  //     navigate(-1)
+  //     tg.BackButton.hide()
+  //     console.log('1')
+  //   })
+  // }, [])
 
   return (
       <div className={classes.startSection}>
