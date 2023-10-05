@@ -51,9 +51,9 @@ const DrugViewPage = ({isActiveBackButton}) => {
   }, [])
 
   useEffect(() => {
-    tg.onEvent('backButtonClicked', navigate(-1))
+    tg.onEvent('backButtonClicked', () => {navigate(-1)})
     return () => {
-      tg.offEvent('backButtonClicked', navigate(-1))
+      tg.offEvent('backButtonClicked', () => {navigate(-1)})
     }
   }, [])
 
