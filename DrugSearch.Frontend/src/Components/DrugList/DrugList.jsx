@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useLocation, useParams, useSearchParams} from "react-router-dom";
 import DrugService from "../../API/DrugService.js";
 import DrugItem from "../DrugItem/DrugItem.jsx";
 import {useTelegram} from "../../Hooks/useTelegram.js";

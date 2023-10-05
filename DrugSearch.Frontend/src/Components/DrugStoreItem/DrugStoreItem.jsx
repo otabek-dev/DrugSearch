@@ -1,7 +1,7 @@
 import React from 'react';
-import classes from "../DrugViewPage/drugViewPage.module.css";
+import classes from "./drugStoreItem.module.css";
 
-const DrugStoreItem = () => {
+const DrugStoreItem = ({drug}) => {
   return (
       <div>
         <div className={classes.startSection}>

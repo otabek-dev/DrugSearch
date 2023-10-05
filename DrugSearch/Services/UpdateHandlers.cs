@@ -3,6 +3,9 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.ReplyMarkups;
 using Telegram.Bot.Types;
+using Microsoft.AspNetCore.Mvc.Razor.Internal;
+using DrugSearch.Models;
+using DrugSearch.ViewModel;
 
 namespace DrugSearch.Services
 {
@@ -112,29 +115,13 @@ namespace DrugSearch.Services
         {
             try
             {
-                if (inlineQuery.Query is "") 
-                    return;
+                List<DrugViewModel> drugs;
+                if (inlineQuery.Query is "")
+                    drugs = _drugSearchService.GetAllDrugs();
+                else
+                    drugs = _drugSearchService.SearchDrugs(inlineQuery.Query);
 
-                List<InlineQueryResult> results = new();
-
-                var drugs = _drugSearchService.SearchDrugs(inlineQuery.Query);
-
-                foreach (var drug in drugs)
-                {
-                    var resultTextMarkdown = $"[{drug.Name}]({Bot.BotUrlWithStartApp}{drug.Id})\n\n{drug.Description}";
-
-                    var article = new InlineQueryResultArticle(
-                    id: Guid.NewGuid().ToString(),
-                    title: drug.Name,
-                    inputMessageContent: new InputTextMessageContent(resultTextMarkdown) { ParseMode = ParseMode.Markdown});
-
-                    article.Description = drug.Description;
-                    article.ThumbnailUrl = "https://loremflickr.com/300/300/medicament";
-                    article.ThumbnailWidth = 300;
-                    article.ThumbnailHeight = 300;
-
-                    results.Add(article); 
-                }
+                var results = InlineQueryResult(drugs);
 
                 await _botClient.AnswerInlineQueryAsync(
                     inlineQueryId: inlineQuery.Id,
@@ -147,6 +134,29 @@ namespace DrugSearch.Services
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        private List<InlineQueryResult> InlineQueryResult(List<DrugViewModel> drugs)
+        {
+            List<InlineQueryResult> results = new();
+            foreach (var drug in drugs)
+            {
+                var resultTextMarkdown = $"[{drug.Name}]({Bot.BotUrlWithStartApp}{drug.Id})\n\n{drug.Description}";
+
+                var article = new InlineQueryResultArticle(
+                id: Guid.NewGuid().ToString(),
+                title: drug.Name,
+                inputMessageContent: new InputTextMessageContent(resultTextMarkdown) { ParseMode = ParseMode.Markdown });
+
+                article.Description = drug.Description;
+                article.ThumbnailUrl = "https://loremflickr.com/300/300/medicament";
+                article.ThumbnailWidth = 300;
+                article.ThumbnailHeight = 300;
+
+                results.Add(article);
+            }
+
+            return results;
         }
 
         private async Task BotOnChosenInlineResultReceived(ChosenInlineResult chosenInlineResult, CancellationToken cancellationToken)

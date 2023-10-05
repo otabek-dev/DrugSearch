@@ -21,5 +21,4 @@ export default class DrugService {
         })
     return response;
   }
-
 }

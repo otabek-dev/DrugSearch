@@ -31,7 +31,20 @@ namespace DrugSearch.Services
         public List<DrugViewModel> SearchDrugs(string query)
         {
             var result = _context.Drugs
-                .FullTextSearchQuery(query)
+                .Where(p => EF.Functions.Like(p.Name.ToLower(), $"%{query.ToLower()}%"))
+                .Select(drug => new DrugViewModel()
+                {
+                    Id = drug.Id,
+                    Name = drug.Name,
+                    Description = drug.Description
+                });
+
+            return result.ToList();
+        }
+
+        public List<DrugViewModel> GetAllDrugs()
+        {
+            var result = _context.Drugs
                 .ToList()
                 .Select(drug => new DrugViewModel()
                 {
@@ -45,7 +58,7 @@ namespace DrugSearch.Services
 
         private DrugPriceInDrugStoreViewModel GetDrugViewModel(Drug drug)
         {
-            var drugViewModel = new DrugPriceInDrugStoreViewModel() 
+            var drugViewModel = new DrugPriceInDrugStoreViewModel()
             {
                 Id = drug.Id,
                 Name = drug.Name,
