@@ -3,8 +3,6 @@ import MyLink from "../MyLink/MyLink.jsx";
 import {useSearchParams} from "react-router-dom";
 
 const DrugItem = ({drug, className}) => {
-  let [urlParams, setUrlParams] = useSearchParams();
-
   return (
     <div className={cl.drug + " " + className}>
       <img src='/drug.png' className={cl.img} alt={'drug img'}/>
