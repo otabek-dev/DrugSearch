@@ -3,8 +3,6 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.ReplyMarkups;
 using Telegram.Bot.Types;
-using Microsoft.AspNetCore.Mvc.Razor.Internal;
-using DrugSearch.Models;
 using DrugSearch.ViewModel;
 
 namespace DrugSearch.Services
@@ -55,7 +53,7 @@ namespace DrugSearch.Services
                 await botClient.SendChatActionAsync(
                     chatId: message.Chat.Id,
                     chatAction: ChatAction.Typing,
-                    cancellationToken: cancellationToken);
+                    cancellationToken: default);
 
                 InlineKeyboardMarkup inlineKeyboard = new(
                     new[]
@@ -74,7 +72,7 @@ namespace DrugSearch.Services
                     chatId: message.Chat.Id,
                     text: "Welcome to DrugSearch bot.\nSend a drug name or press the button to start Inline Query:",
                     replyMarkup: inlineKeyboard,
-                    cancellationToken: cancellationToken);
+                    cancellationToken: default);
             }
 
             static async Task<Message> SendInlineKeyboardWithWebApp(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
@@ -82,7 +80,7 @@ namespace DrugSearch.Services
                 await botClient.SendChatActionAsync(
                     chatId: message.Chat.Id,
                     chatAction: ChatAction.Typing,
-                    cancellationToken: cancellationToken);
+                    cancellationToken: default);
 
                 var drug = message.Text?.Replace(' ', '-');
 
@@ -94,7 +92,7 @@ namespace DrugSearch.Services
                     chatId: message.Chat.Id,
                     text: "Click on the button to see the results",
                     replyMarkup: inlineKeyboard,
-                    cancellationToken: cancellationToken);
+                    cancellationToken: default);
             }
         }
 
@@ -128,7 +126,7 @@ namespace DrugSearch.Services
                     results: results, 
                     cacheTime: 0,
                     isPersonal: true,
-                    cancellationToken: cancellationToken);
+                    cancellationToken: default);
             }
             catch (Exception e)
             {
@@ -164,7 +162,7 @@ namespace DrugSearch.Services
             await _botClient.SendTextMessageAsync(
                 chatId: chosenInlineResult.From.Id,
                 text: $"You chose result with Id: {chosenInlineResult.ResultId}",
-                cancellationToken: cancellationToken);
+                cancellationToken: default);
         }
 
         private Task UnknownUpdateHandlerAsync(Update update, CancellationToken cancellationToken)
